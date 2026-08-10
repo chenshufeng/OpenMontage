@@ -1,0 +1,326 @@
+{
+  "92": {
+    "inputs": {
+      "filename_prefix": "video/MiniMax_H3",
+      "format": "auto",
+      "codec": "auto",
+      "video": [
+        "105:91",
+        0
+      ]
+    },
+    "class_type": "SaveVideo",
+    "_meta": {
+      "title": "保存视频"
+    }
+  },
+  "114": {
+    "inputs": {
+      "image": "Qwen-Image-2512_00010_.png"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "加载图像"
+    }
+  },
+  "115": {
+    "inputs": {
+      "aspect_ratio": "9:16 (Portrait Widescreen)",
+      "megapixels": 0.4,
+      "multiple": 32
+    },
+    "class_type": "ResolutionSelector",
+    "_meta": {
+      "title": "分辨率选择器"
+    }
+  },
+  "119": {
+    "inputs": {
+      "upscale_method": "nearest-exact",
+      "megapixels": 1,
+      "resolution_steps": 32
+    },
+    "class_type": "ImageScaleToTotalPixels",
+    "_meta": {
+      "title": "缩放图像（像素）"
+    }
+  },
+  "120": {
+    "inputs": {
+      "image": [
+        "119",
+        0
+      ]
+    },
+    "class_type": "GetImageSize",
+    "_meta": {
+      "title": "获取图像尺寸"
+    }
+  },
+  "105:11": {
+    "inputs": {
+      "vae_name": "minimax_h3_video_vae_fp16.safetensors"
+    },
+    "class_type": "VAELoader",
+    "_meta": {
+      "title": "加载VAE"
+    }
+  },
+  "105:24": {
+    "inputs": {
+      "vae_name": "minimax_h3_audio_vae_fp32.safetensors"
+    },
+    "class_type": "VAELoader",
+    "_meta": {
+      "title": "加载VAE"
+    }
+  },
+  "105:23": {
+    "inputs": {
+      "samples": [
+        "105:14",
+        0
+      ],
+      "vae": [
+        "105:24",
+        0
+      ]
+    },
+    "class_type": "VAEDecodeAudio",
+    "_meta": {
+      "title": "VAE解码（音频）"
+    }
+  },
+  "105:10": {
+    "inputs": {
+      "samples": [
+        "105:14",
+        0
+      ],
+      "vae": [
+        "105:11",
+        0
+      ]
+    },
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE解码"
+    }
+  },
+  "105:17": {
+    "inputs": {
+      "sampler_name": "res_multistep"
+    },
+    "class_type": "KSamplerSelect",
+    "_meta": {
+      "title": "K采样器选择"
+    }
+  },
+  "105:9": {
+    "inputs": {
+      "scheduler": "simple",
+      "steps": 8,
+      "denoise": 1,
+      "model": [
+        "105:127",
+        0
+      ]
+    },
+    "class_type": "BasicScheduler",
+    "_meta": {
+      "title": "基本调度器"
+    }
+  },
+  "105:14": {
+    "inputs": {
+      "noise": [
+        "105:15",
+        0
+      ],
+      "guider": [
+        "105:16",
+        0
+      ],
+      "sampler": [
+        "105:123",
+        0
+      ],
+      "sigmas": [
+        "105:9",
+        0
+      ],
+      "latent_image": [
+        "105:104",
+        1
+      ]
+    },
+    "class_type": "SamplerCustomAdvanced",
+    "_meta": {
+      "title": "自定义采样器（高级）"
+    }
+  },
+  "105:16": {
+    "inputs": {
+      "model": [
+        "105:127",
+        0
+      ],
+      "conditioning": [
+        "105:104",
+        0
+      ]
+    },
+    "class_type": "BasicGuider",
+    "_meta": {
+      "title": "基本引导器"
+    }
+  },
+  "105:6": {
+    "inputs": {
+      "unet_name": "minimax_h3_fl2va_pruned_int8_convrot.safetensors",
+      "weight_dtype": "default"
+    },
+    "class_type": "UNETLoader",
+    "_meta": {
+      "title": "UNet加载器"
+    }
+  },
+  "105:13": {
+    "inputs": {
+      "clip_name": "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
+      "type": "minimax",
+      "device": "default"
+    },
+    "class_type": "CLIPLoader",
+    "_meta": {
+      "title": "加载CLIP"
+    }
+  },
+  "105:15": {
+    "inputs": {
+      "noise_seed": 164722330685174
+    },
+    "class_type": "RandomNoise",
+    "_meta": {
+      "title": "随机噪波"
+    }
+  },
+  "105:91": {
+    "inputs": {
+      "fps": 24,
+      "bit_depth": 8,
+      "images": [
+        "105:10",
+        0
+      ],
+      "audio": [
+        "105:23",
+        0
+      ]
+    },
+    "class_type": "CreateVideo",
+    "_meta": {
+      "title": "创建视频"
+    }
+  },
+  "105:104": {
+    "inputs": {
+      "prompt": "全局设定（不变）：暖黄怀旧的冬夜室内。7岁中国乡村小女孩（纯东亚人面孔，乌黑头发）趴在老式木窗台边，下巴搁在叠放的手臂上，身穿洗得发白的碎花棉布裙，齐眉刘海扎两条低马尾，左脸颊一颗小痣。窗外大雪纷飞，窗玻璃上凝结着雾气与水珠，暖黄钨丝灯光柔和地照亮她的侧脸，写实电影质感，冷暖对比光影，空气中可见细微尘埃粒子在灯光里漂浮。\n\n分镜时间轴：\n[0s-2s] 静谧与呼吸感：女孩保持趴窗望雪的姿势，睫毛轻微颤动，胸口随呼吸轻微起伏，钨丝灯光呈现极细微的呼吸式明暗波动，她侧脸的轮廓光随之微微明暗，窗外雪花持续缓慢飘落。\n[2s-4s] 视线收回与眨眼：她的视线从远处的大雪缓缓收回，缓慢地眨动一下眼睛，玻璃上的一滴水珠缓缓滑落并反射出光点，她哈出的白雾在玻璃上轻微扩散变淡。\n[4s-6s] 转头与浅笑：她轻轻转头看向镜头右侧，嘴角轻轻上扬成一个含蓄的抿嘴浅笑（不露齿），钨丝灯光柔和地照亮她转正后的脸庞，面部亮度缓缓提升。\n[6s-8s] 指尖触雾：她慢慢抬起小手，指尖轻轻划过玻璃上的雾气留下一道清晰水痕，灯光透过水痕在她手背勾出细小的轮廓光，指尖带起的水痕缓缓透出窗外冷蓝雪光。\n[8s-10s] 归宁与落点：她的手缓缓收回重新垫在下巴下，目光望向窗外远处——雪幕深处一盏暖黄灯光缓缓亮起，她眸子里映出那一点暖光，抿嘴笑意更安静，室内灯光光晕柔和扩散，画面归于静谧。\n\n运镜：镜头以极缓慢的速度推近（slow push in），同时带轻微的手持呼吸感与前景虚化光斑的缓慢位移，营造身临其境的凝视感，无突兀晃动。\n光影要求：暖黄灯光为主光源并带呼吸式细微明暗波动，窗外冷蓝雪光作为侧逆光，玻璃水珠、白雾与指尖水痕需有真实高光反射，尘埃粒子在光束中可见，整体低调暖调，避免过曝与画面闪烁。",
+      "width": [
+        "115",
+        0
+      ],
+      "height": [
+        "115",
+        1
+      ],
+      "length": [
+        "105:107",
+        1
+      ],
+      "clip": [
+        "105:13",
+        0
+      ],
+      "vae": [
+        "105:11",
+        0
+      ],
+      "first_frame": [
+        "114",
+        0
+      ]
+    },
+    "class_type": "MiniMaxH3ImageToVideo",
+    "_meta": {
+      "title": "MiniMax H3 Image to Video"
+    }
+  },
+  "105:107": {
+    "inputs": {
+      "expression": "max(5, round(a * 24)) + (5 - (max(5, round(a * 24)) % 17)) % 17",
+      "values.a": [
+        "105:111",
+        0
+      ]
+    },
+    "class_type": "ComfyMathExpression",
+    "_meta": {
+      "title": "数学表达式"
+    }
+  },
+  "105:111": {
+    "inputs": {
+      "value": 10
+    },
+    "class_type": "PrimitiveFloat",
+    "_meta": {
+      "title": "Float (duration)"
+    }
+  },
+  "105:123": {
+    "inputs": {},
+    "class_type": "MiniMaxH3TurboSampler",
+    "_meta": {
+      "title": "MiniMax-H3 Turbo Sampler (4-step)"
+    }
+  },
+  "105:126": {
+    "inputs": {
+      "lora_name": "minimax_h3_turbo_v4_step600_ema.safetensors",
+      "strength": 1,
+      "low_vram": false,
+      "model": [
+        "105:6",
+        0
+      ]
+    },
+    "class_type": "MiniMaxH3TurboLoRA",
+    "_meta": {
+      "title": "MiniMax-H3 Turbo LoRA"
+    }
+  },
+  "105:127": {
+    "inputs": {
+      "reuse_threshold": 0.12,
+      "start_percent": 0.1,
+      "end_percent": 0.9,
+      "max_consecutive_skips": 2,
+      "cache_device": "auto",
+      "vram_reserve_gb": 2,
+      "ram_reserve_gb": 4,
+      "signature_tokens": 128,
+      "signature_features": 64,
+      "verbose": true,
+      "sage_attention": "auto",
+      "model": [
+        "105:126",
+        0
+      ]
+    },
+    "class_type": "MiniMaxH3SpeedCache",
+    "_meta": {
+      "title": "⚡ MiniMax H3 加速缓存 · 安全版"
+    }
+  }
+}
